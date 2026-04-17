@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Paradise | Pokemon · NBA · One Piece</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 60px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #f9d923, #ff6b6b, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: #fff; }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 80px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(249,217,35,0.12) 0%, transparent 70%);
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, #f9d923, #ff6b6b, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.55);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(90deg, #f9d923, #ff6b6b);
+      color: #000;
+      box-shadow: 0 4px 24px rgba(249,217,35,0.3);
+    }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      background: transparent;
+    }
+
+    /* CATEGORIES */
+    .section { padding: 80px 60px; }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 800;
+      margin-bottom: 48px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+      cursor: pointer;
+    }
+    .card:hover { transform: translateY(-6px); }
+
+    .card-pokemon {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      border: 1px solid rgba(249,217,35,0.2);
+      box-shadow: 0 8px 40px rgba(249,217,35,0.08);
+    }
+    .card-pokemon:hover { box-shadow: 0 20px 60px rgba(249,217,35,0.2); }
+
+    .card-nba {
+      background: linear-gradient(135deg, #1a0a00 0%, #2d1a00 60%, #4a2c00 100%);
+      border: 1px solid rgba(255,107,107,0.2);
+      box-shadow: 0 8px 40px rgba(255,107,107,0.08);
+    }
+    .card-nba:hover { box-shadow: 0 20px 60px rgba(255,107,107,0.2); }
+
+    .card-onepiece {
+      background: linear-gradient(135deg, #0a1a0a 0%, #0d2d1a 60%, #0a3d2e 100%);
+      border: 1px solid rgba(78,205,196,0.2);
+      box-shadow: 0 8px 40px rgba(78,205,196,0.08);
+    }
+    .card-onepiece:hover { box-shadow: 0 20px 60px rgba(78,205,196,0.2); }
+
+    .card-icon { font-size: 48px; margin-bottom: 20px; display: block; }
+    .card-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .tag-pokemon { background: rgba(249,217,35,0.15); color: #f9d923; }
+    .tag-nba { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+    .tag-onepiece { background: rgba(78,205,196,0.15); color: #4ecdc4; }
+
+    .card h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+    .card p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 24px; }
+
+    .card-features { list-style: none; margin-bottom: 28px; }
+    .card-features li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-features li:last-child { border-bottom: none; }
+
+    .card-link {
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap .2s;
+    }
+    .card-link:hover { gap: 10px; }
+    .link-pokemon { color: #f9d923; }
+    .link-nba { color: #ff6b6b; }
+    .link-onepiece { color: #4ecdc4; }
+
+    /* WHY US */
+    .why-section {
+      padding: 80px 60px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-top: 48px;
+    }
+    .why-item { text-align: center; }
+    .why-item .icon { font-size: 36px; margin-bottom: 16px; }
+    .why-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .why-item p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    /* CONTACT */
+    .contact-section { padding: 80px 60px; text-align: center; }
+    .contact-section h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
+    .contact-section p { color: rgba(255,255,255,0.5); margin-bottom: 40px; font-size: 16px; }
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .contact-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px 32px;
+      min-width: 200px;
+    }
+    .contact-item .icon { font-size: 28px; margin-bottom: 10px; }
+    .contact-item h4 { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+    .contact-item p { font-size: 15px; font-weight: 600; color: #fff; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      nav ul { display: none; }
+      .section, .why-section, .contact-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">CARD PARADISE</div>
+    <ul>
+      <li><a href="#categories">品类</a></li>
+      <li><a href="#why">为什么选我们</a></li>
+      <li><a href="#contact">联系我们</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>收藏级卡牌<br /><span>一站购齐</span></h1>
+    <p>专注 Pokemon · NBA Card · One Piece Card<br />正品保障，全球货源，专业鉴定</p>
+    <div class="hero-btns">
+      <a href="#categories" class="btn btn-primary">浏览品类</a>
+      <a href="#contact" class="btn btn-outline">联系我们</a>
+    </div>
+  </section>
+
+  <section class="section" id="categories">
+    <p class="section-title">我们的品类</p>
+    <h2 class="section-heading">三大卡牌品类</h2>
+    <div class="cards-grid">
+
+      <div class="card card-pokemon">
+        <span class="card-icon">⚡</span>
+        <span class="card-tag tag-pokemon">Pokemon</span>
+        <h3>宝可梦卡牌</h3>
+        <p>从初代经典到最新系列，覆盖日版、英版、中文版，稀有卡、PSA 评级卡应有尽有。</p>
+        <ul class="card-features">
+          <li>⭐ 日版 / 英版 / 中文版</li>
+          <li>⭐ 单卡、补充包、套盒</li>
+          <li>⭐ PSA / BGS 评级卡</li>
+          <li>⭐ 绝版稀有卡收购</li>
+        </ul>
+        <a href="#contact" class="card-link link-pokemon">立即询价 →</a>
+      </div>
+
+      <div class="card card-nba">
+        <span class="card-icon">🏀</span>
+        <span class="card-tag tag-nba">NBA Card</span>
+        <h3>NBA 球星卡</h3>
+        <p>顶级球星 RC 新秀卡、签名卡、号码卡，Panini、Topps 官方正品，投资收藏两相宜。</p>
+        <ul class="card-features">
+          <li>🔥 Prizm / Select / Mosaic</li>
+          <li>🔥 新秀 RC / 签名卡</li>
+          <li>🔥 PSA 10 高评级</li>
+          <li>🔥 球星卡投资咨询</li>
+        </ul>
+        <a href="#contact" class="card-link link-nba">立即询价 →</a>
+      </div>
+
+      <div class="card card-onepiece">
+        <span class="card-icon">☠️</span>
+        <span class="card-tag tag-onepiece">One Piece</span>
+        <h3>航海王卡牌</h3>
+        <p>OPCG 官方卡牌全系列，日版正版进货，稀有 SEC / L / SP 卡专业代购，量大优惠。</p>
+        <ul class="card-features">
+          <li>🌊 OP01 ~ 最新弹</li>
+          <li>🌊 SEC / Leader / L 稀有卡</li>
+          <li>🌊 整箱 / 整盒批发</li>
+          <li>🌊 日版首发预定</li>
+        </ul>
+        <a href="#contact" class="card-link link-onepiece">立即询价 →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="why-section" id="why">
+    <p class="section-title">为什么选择我们</p>
+    <h2 class="section-heading">专业 · 正品 · 可靠</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="icon">✅</div>
+        <h4>100% 正品保障</h4>
+        <p>直接对接官方渠道，所有产品附正品保证</p>
+      </div>
+      <div class="why-item">
+        <div class="icon">🌍</div>
+        <h4>全球货源</h4>
+        <p>日本、美国、欧洲一手货源，第一时间获取新品</p>
+      </div>
+      <div class="why-item">
+        <div class="icon">🔍</div>
+        <h4>专业鉴定</h4>
+        <p>多年经验团队，协助 PSA / BGS 评级送评</p>
+      </div>
+      <div class="why-item">
+        <div class="icon">📦</div>
+        <h4>安全包装</h4>
+        <p>专业卡牌包装，toploaders + 气泡袋全程保护</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <h2>联系我们</h2>
+    <p>有任何询价、合作或收购需求，欢迎随时联系</p>
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="icon">💬</div>
+        <h4>微信</h4>
+        <p>cardparadise888</p>
+      </div>
+      <div class="contact-item">
+        <div class="icon">📧</div>
+        <h4>邮箱</h4>
+        <p>hello@cardparadise.com</p>
+      </div>
+      <div class="contact-item">
+        <div class="icon">📱</div>
+        <h4>Instagram</h4>
+        <p>@cardparadise</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Card Paradise · Pokemon · NBA Card · One Piece Card
+  </footer>
+
+</body>
+</html>
