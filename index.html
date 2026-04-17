@@ -144,6 +144,37 @@
     .card-onepiece:hover { box-shadow: 0 20px 60px rgba(78,205,196,0.2); }
 
     .card-icon { font-size: 48px; margin-bottom: 20px; display: block; }
+    .pokeball {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #e63232 50%, #fff 50%);
+      border: 3px solid #222;
+      position: relative;
+    }
+    .pokeball::after {
+      content: '';
+      position: absolute;
+      top: calc(50% - 1.5px);
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #222;
+    }
+    .pokeball::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 13px;
+      height: 13px;
+      background: #fff;
+      border-radius: 50%;
+      border: 3px solid #222;
+      z-index: 1;
+    }
     .card-tag {
       display: inline-block;
       font-size: 11px;
@@ -268,7 +299,7 @@
     <div class="cards-grid">
 
       <div class="card card-pokemon">
-        <span class="card-icon">⚡</span>
+        <span class="card-icon"><span class="pokeball"></span></span>
         <span class="card-tag tag-pokemon">Pokemon</span>
         <h3>宝可梦卡牌</h3>
         <p>从初代经典到最新系列，覆盖日版、英版、中文版，稀有卡、PSA 评级卡应有尽有。</p>
