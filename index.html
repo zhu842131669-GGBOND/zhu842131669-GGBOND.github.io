@@ -307,6 +307,28 @@
     }
     .card-onepiece:hover { box-shadow: 0 24px 70px rgba(78,205,196,0.25); border-color: rgba(78,205,196,0.45); }
 
+    .card-football {
+      background: linear-gradient(135deg, #0a1a00 0%, #0f2d00 60%, #1a4a00 100%);
+      border: 1px solid rgba(100,220,80,0.2);
+      box-shadow: 0 8px 40px rgba(100,220,80,0.08);
+    }
+    .card-football::before { background: #64dc50; }
+    .card-football:hover { box-shadow: 0 24px 70px rgba(100,220,80,0.25); border-color: rgba(100,220,80,0.45); }
+    .card-football .particles span { background: rgba(100,220,80,0.6); }
+    .tag-football { background: rgba(100,220,80,0.15); color: #64dc50; }
+    .link-football { color: #64dc50; }
+
+    .card-kpop {
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d0d4a 60%, #3d1060 100%);
+      border: 1px solid rgba(200,130,255,0.2);
+      box-shadow: 0 8px 40px rgba(200,130,255,0.08);
+    }
+    .card-kpop::before { background: #c882ff; }
+    .card-kpop:hover { box-shadow: 0 24px 70px rgba(200,130,255,0.25); border-color: rgba(200,130,255,0.45); }
+    .card-kpop .particles span { background: rgba(200,130,255,0.6); }
+    .tag-kpop { background: rgba(200,130,255,0.15); color: #c882ff; }
+    .link-kpop { color: #c882ff; }
+
     .card-icon { font-size: 48px; margin-bottom: 20px; display: block; position: relative; z-index: 1; }
     .pokeball {
       display: inline-block;
@@ -595,7 +617,7 @@
         <div class="stat-label">在售卡牌</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" data-target="3">0</div>
+        <div class="stat-number" data-target="5">0</div>
         <div class="stat-label">顶级品类</div>
       </div>
       <div class="stat-item">
@@ -607,7 +629,7 @@
 
   <section class="section" id="categories">
     <p class="section-title">我们的品类</p>
-    <h2 class="section-heading">三大卡牌品类</h2>
+    <h2 class="section-heading">五大卡牌品类</h2>
     <div class="cards-grid">
 
       <div class="card card-pokemon">
@@ -659,6 +681,40 @@
           <li>🌊 日版首发预定</li>
         </ul>
         <a href="#contact" class="card-link link-onepiece">立即询价 →</a>
+      </div>
+
+      <div class="card card-football">
+        <div class="particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span class="card-icon">⚽</span>
+        <span class="card-tag tag-football">Football</span>
+        <h3>足球球星卡</h3>
+        <p>Topps & Panini 官方授权，覆盖欧洲五大联赛顶级球星，新秀卡、签名卡、号码卡齐全。</p>
+        <ul class="card-features">
+          <li>🟢 Topps Chrome / Match Attax</li>
+          <li>🟢 Panini Prizm / Select</li>
+          <li>🟢 梅西 / C罗 / 姆巴佩签名卡</li>
+          <li>🟢 PSA 评级 / 投资收藏咨询</li>
+        </ul>
+        <a href="#contact" class="card-link link-football">立即询价 →</a>
+      </div>
+
+      <div class="card card-kpop">
+        <div class="particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span class="card-icon">🎴</span>
+        <span class="card-tag tag-kpop">日韩小卡</span>
+        <h3>日韩明星小卡</h3>
+        <p>权志龙强势回归！快闪限定、专辑小卡、场周卡全线备货，正版稀有卡专业代购。</p>
+        <ul class="card-features">
+          <li>💜 GD 回归快闪限定小卡</li>
+          <li>💜 专辑随机小卡 / 签名版</li>
+          <li>💜 演唱会场周限定卡</li>
+          <li>💜 日韩各大偶像团体小卡</li>
+        </ul>
+        <a href="#contact" class="card-link link-kpop">立即询价 →</a>
       </div>
 
     </div>
@@ -714,7 +770,7 @@
   </section>
 
   <footer>
-    © 2026 GGBOND CARD HABITAT · Pokemon · NBA Card · One Piece Card
+    © 2026 GGBOND CARD HABITAT · Pokemon · NBA · One Piece · Football · 日韩小卡
   </footer>
 
   <!-- 3D CARD VIEWER LIGHTBOX -->
