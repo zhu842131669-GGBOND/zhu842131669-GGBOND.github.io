@@ -11,6 +11,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: #0a0a0f;
       color: #fff;
+      overflow-x: hidden;
     }
 
     /* NAV */
@@ -46,9 +47,11 @@
 
     /* HERO */
     .hero {
+      position: relative;
       text-align: center;
-      padding: 100px 20px 80px;
+      padding: 80px 20px 60px;
       background: radial-gradient(ellipse at 50% 0%, rgba(249,217,35,0.12) 0%, transparent 70%);
+      overflow: hidden;
     }
     .hero h1 {
       font-size: clamp(36px, 6vw, 72px);
@@ -68,7 +71,7 @@
       margin: 0 auto 40px;
       line-height: 1.7;
     }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
     .btn {
       padding: 14px 32px;
       border-radius: 50px;
@@ -90,6 +93,113 @@
       background: transparent;
     }
 
+    /* CAROUSEL */
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 20px 0 40px;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 20px;
+      animation: scroll-cards 30s linear infinite;
+      width: max-content;
+    }
+    .carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
+    @keyframes scroll-cards {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .carousel-card {
+      width: 160px;
+      height: 220px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .carousel-card:hover { transform: scale(1.08) translateY(-6px); }
+    .carousel-card .c-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .carousel-card .c-emoji { font-size: 42px; }
+    .carousel-card .c-name { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; }
+    .carousel-card .c-sub  { font-size: 11px; color: rgba(255,255,255,0.45); }
+    /* card color themes */
+    .cc-p .c-inner { background: linear-gradient(145deg, #1a1a2e, #0f3460); box-shadow: 0 8px 32px rgba(249,217,35,0.15); }
+    .cc-n .c-inner { background: linear-gradient(145deg, #1a0a00, #4a2c00); box-shadow: 0 8px 32px rgba(255,107,107,0.15); }
+    .cc-o .c-inner { background: linear-gradient(145deg, #0a1a0a, #0a3d2e); box-shadow: 0 8px 32px rgba(78,205,196,0.15); }
+    .cc-p:hover .c-inner { box-shadow: 0 16px 48px rgba(249,217,35,0.35); }
+    .cc-n:hover .c-inner { box-shadow: 0 16px 48px rgba(255,107,107,0.35); }
+    .cc-o:hover .c-inner { box-shadow: 0 16px 48px rgba(78,205,196,0.35); }
+    /* shimmer */
+    .carousel-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+      transform: skewX(-15deg);
+      transition: left .6s ease;
+    }
+    .carousel-card:hover::after { left: 120%; }
+    /* fade edges */
+    .carousel-wrapper::before,
+    .carousel-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 120px;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .carousel-wrapper::before { left: 0;  background: linear-gradient(to right, #0a0a0f, transparent); }
+    .carousel-wrapper::after  { right: 0; background: linear-gradient(to left,  #0a0a0f, transparent); }
+
+    /* STATS */
+    .stats-section {
+      padding: 60px;
+      background: rgba(255,255,255,0.015);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 40px;
+      text-align: center;
+    }
+    .stat-item .stat-number {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-item:nth-child(1) .stat-number { background: linear-gradient(90deg,#f9d923,#ffb347); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .stat-item:nth-child(2) .stat-number { background: linear-gradient(90deg,#ff6b6b,#ff8e53); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .stat-item:nth-child(3) .stat-number { background: linear-gradient(90deg,#4ecdc4,#44a8b3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .stat-item:nth-child(4) .stat-number { background: linear-gradient(90deg,#a78bfa,#818cf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .stat-item .stat-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
     /* CATEGORIES */
     .section { padding: 80px 60px; }
     .section-title {
@@ -105,45 +215,93 @@
       font-weight: 800;
       margin-bottom: 48px;
     }
-
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 24px;
     }
 
+    /* CARD with particle glow */
     .card {
       border-radius: 20px;
       padding: 40px 32px;
       position: relative;
       overflow: hidden;
-      transition: transform .3s, box-shadow .3s;
+      transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
       cursor: pointer;
     }
-    .card:hover { transform: translateY(-6px); }
+    .card:hover { transform: translateY(-8px) scale(1.01); }
+
+    /* animated glow orb */
+    .card::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      top: -60px;
+      right: -60px;
+      filter: blur(60px);
+      opacity: 0;
+      transition: opacity .4s, transform .4s;
+      pointer-events: none;
+    }
+    .card:hover::before { opacity: 0.55; transform: scale(1.3); }
+    .card-pokemon::before  { background: #f9d923; }
+    .card-nba::before      { background: #ff6b6b; }
+    .card-onepiece::before { background: #4ecdc4; }
+
+    /* floating particles */
+    .card .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .card .particles span {
+      position: absolute;
+      bottom: -10px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-up 3s infinite ease-in;
+    }
+    .card:hover .particles span { opacity: 1; }
+    .card-pokemon .particles span { background: rgba(249,217,35,0.6); }
+    .card-nba     .particles span { background: rgba(255,107,107,0.6); }
+    .card-onepiece .particles span { background: rgba(78,205,196,0.6); }
+
+    .card .particles span:nth-child(1) { left: 15%; animation-delay: 0s;    animation-duration: 2.8s; }
+    .card .particles span:nth-child(2) { left: 35%; animation-delay: 0.4s;  animation-duration: 3.2s; width:6px; height:6px; }
+    .card .particles span:nth-child(3) { left: 55%; animation-delay: 0.8s;  animation-duration: 2.5s; }
+    .card .particles span:nth-child(4) { left: 70%; animation-delay: 0.2s;  animation-duration: 3.5s; width:3px; height:3px; }
+    .card .particles span:nth-child(5) { left: 85%; animation-delay: 0.6s;  animation-duration: 2.9s; }
+
+    @keyframes float-up {
+      0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-260px) scale(0.4); opacity: 0; }
+    }
 
     .card-pokemon {
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
       border: 1px solid rgba(249,217,35,0.2);
       box-shadow: 0 8px 40px rgba(249,217,35,0.08);
     }
-    .card-pokemon:hover { box-shadow: 0 20px 60px rgba(249,217,35,0.2); }
+    .card-pokemon:hover { box-shadow: 0 24px 70px rgba(249,217,35,0.25); border-color: rgba(249,217,35,0.45); }
 
     .card-nba {
       background: linear-gradient(135deg, #1a0a00 0%, #2d1a00 60%, #4a2c00 100%);
       border: 1px solid rgba(255,107,107,0.2);
       box-shadow: 0 8px 40px rgba(255,107,107,0.08);
     }
-    .card-nba:hover { box-shadow: 0 20px 60px rgba(255,107,107,0.2); }
+    .card-nba:hover { box-shadow: 0 24px 70px rgba(255,107,107,0.25); border-color: rgba(255,107,107,0.45); }
 
     .card-onepiece {
       background: linear-gradient(135deg, #0a1a0a 0%, #0d2d1a 60%, #0a3d2e 100%);
       border: 1px solid rgba(78,205,196,0.2);
       box-shadow: 0 8px 40px rgba(78,205,196,0.08);
     }
-    .card-onepiece:hover { box-shadow: 0 20px 60px rgba(78,205,196,0.2); }
+    .card-onepiece:hover { box-shadow: 0 24px 70px rgba(78,205,196,0.25); border-color: rgba(78,205,196,0.45); }
 
-    .card-icon { font-size: 48px; margin-bottom: 20px; display: block; }
+    .card-icon { font-size: 48px; margin-bottom: 20px; display: block; position: relative; z-index: 1; }
     .pokeball {
       display: inline-block;
       width: 48px;
@@ -184,15 +342,17 @@
       padding: 4px 12px;
       border-radius: 20px;
       margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
     }
     .tag-pokemon { background: rgba(249,217,35,0.15); color: #f9d923; }
-    .tag-nba { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+    .tag-nba     { background: rgba(255,107,107,0.15); color: #ff6b6b; }
     .tag-onepiece { background: rgba(78,205,196,0.15); color: #4ecdc4; }
 
-    .card h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
-    .card p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 24px; }
+    .card h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; position: relative; z-index: 1; }
+    .card p  { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 24px; position: relative; z-index: 1; }
 
-    .card-features { list-style: none; margin-bottom: 28px; }
+    .card-features { list-style: none; margin-bottom: 28px; position: relative; z-index: 1; }
     .card-features li {
       font-size: 13px;
       color: rgba(255,255,255,0.65);
@@ -212,10 +372,12 @@
       align-items: center;
       gap: 6px;
       transition: gap .2s;
+      position: relative;
+      z-index: 1;
     }
     .card-link:hover { gap: 10px; }
-    .link-pokemon { color: #f9d923; }
-    .link-nba { color: #ff6b6b; }
+    .link-pokemon  { color: #f9d923; }
+    .link-nba      { color: #ff6b6b; }
     .link-onepiece { color: #4ecdc4; }
 
     /* WHY US */
@@ -234,28 +396,25 @@
     .why-item { text-align: center; }
     .why-item .icon { font-size: 36px; margin-bottom: 16px; }
     .why-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .why-item p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+    .why-item p  { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
 
     /* CONTACT */
     .contact-section { padding: 80px 60px; text-align: center; }
     .contact-section h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
-    .contact-section p { color: rgba(255,255,255,0.5); margin-bottom: 40px; font-size: 16px; }
-    .contact-info {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
+    .contact-section p  { color: rgba(255,255,255,0.5); margin-bottom: 40px; font-size: 16px; }
+    .contact-info { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
     .contact-item {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 16px;
       padding: 24px 32px;
       min-width: 200px;
+      transition: border-color .3s, background .3s;
     }
+    .contact-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.18); }
     .contact-item .icon { font-size: 28px; margin-bottom: 10px; }
     .contact-item h4 { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
-    .contact-item p { font-size: 15px; font-weight: 600; color: #fff; }
+    .contact-item p  { font-size: 15px; font-weight: 600; color: #fff; }
 
     /* FOOTER */
     footer {
@@ -269,7 +428,7 @@
     @media (max-width: 768px) {
       nav { padding: 16px 24px; }
       nav ul { display: none; }
-      .section, .why-section, .contact-section { padding: 60px 24px; }
+      .section, .why-section, .contact-section, .stats-section { padding: 60px 24px; }
     }
   </style>
 </head>
@@ -291,6 +450,55 @@
       <a href="#categories" class="btn btn-primary">浏览品类</a>
       <a href="#contact" class="btn btn-outline">联系我们</a>
     </div>
+
+    <!-- CAROUSEL -->
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">⚡</span><span class="c-name">Pikachu VMAX</span><span class="c-sub">Pokemon · 日版</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🏀</span><span class="c-name">LeBron James RC</span><span class="c-sub">NBA · Prizm</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">☠️</span><span class="c-name">Luffy SEC</span><span class="c-sub">One Piece · OP01</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">🔥</span><span class="c-name">Charizard ex</span><span class="c-sub">Pokemon · SV</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🌟</span><span class="c-name">Curry Signature</span><span class="c-sub">NBA · Select</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">⚔️</span><span class="c-name">Zoro Leader</span><span class="c-sub">One Piece · OP02</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">💎</span><span class="c-name">Mewtwo PSA 10</span><span class="c-sub">Pokemon · 绝版</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🏆</span><span class="c-name">Jordan BGS 9.5</span><span class="c-sub">NBA · Topps</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">🌊</span><span class="c-name">Nami SP</span><span class="c-sub">One Piece · OP03</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">🌿</span><span class="c-name">Bulbasaur 1st Ed</span><span class="c-sub">Pokemon · 初代</span></div></div>
+        <!-- duplicate for seamless loop -->
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">⚡</span><span class="c-name">Pikachu VMAX</span><span class="c-sub">Pokemon · 日版</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🏀</span><span class="c-name">LeBron James RC</span><span class="c-sub">NBA · Prizm</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">☠️</span><span class="c-name">Luffy SEC</span><span class="c-sub">One Piece · OP01</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">🔥</span><span class="c-name">Charizard ex</span><span class="c-sub">Pokemon · SV</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🌟</span><span class="c-name">Curry Signature</span><span class="c-sub">NBA · Select</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">⚔️</span><span class="c-name">Zoro Leader</span><span class="c-sub">One Piece · OP02</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">💎</span><span class="c-name">Mewtwo PSA 10</span><span class="c-sub">Pokemon · 绝版</span></div></div>
+        <div class="carousel-card cc-n"><div class="c-inner"><span class="c-emoji">🏆</span><span class="c-name">Jordan BGS 9.5</span><span class="c-sub">NBA · Topps</span></div></div>
+        <div class="carousel-card cc-o"><div class="c-inner"><span class="c-emoji">🌊</span><span class="c-name">Nami SP</span><span class="c-sub">One Piece · OP03</span></div></div>
+        <div class="carousel-card cc-p"><div class="c-inner"><span class="c-emoji">🌿</span><span class="c-name">Bulbasaur 1st Ed</span><span class="c-sub">Pokemon · 初代</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="500">0</div>
+        <div class="stat-label">满意客户</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="10000">0</div>
+        <div class="stat-label">在售卡牌</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="3">0</div>
+        <div class="stat-label">顶级品类</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="99">0</div>
+        <div class="stat-label">好评率 %</div>
+      </div>
+    </div>
   </section>
 
   <section class="section" id="categories">
@@ -299,6 +507,9 @@
     <div class="cards-grid">
 
       <div class="card card-pokemon">
+        <div class="particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
         <span class="card-icon"><span class="pokeball"></span></span>
         <span class="card-tag tag-pokemon">Pokemon</span>
         <h3>宝可梦卡牌</h3>
@@ -313,6 +524,9 @@
       </div>
 
       <div class="card card-nba">
+        <div class="particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
         <span class="card-icon">🏀</span>
         <span class="card-tag tag-nba">NBA Card</span>
         <h3>NBA 球星卡</h3>
@@ -327,6 +541,9 @@
       </div>
 
       <div class="card card-onepiece">
+        <div class="particles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
         <span class="card-icon">☠️</span>
         <span class="card-tag tag-onepiece">One Piece</span>
         <h3>航海王卡牌</h3>
@@ -395,6 +612,36 @@
   <footer>
     © 2026 GGBOND CARD HABITAT · Pokemon · NBA Card · One Piece Card
   </footer>
+
+  <script>
+    /* ── Stats counter animation ── */
+    function animateCount(el, target, duration) {
+      const start = performance.now();
+      const isLarge = target >= 1000;
+      const update = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(eased * target);
+        el.textContent = isLarge ? value.toLocaleString() + '+' : value + (el.dataset.suffix || '');
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = isLarge ? target.toLocaleString() + '+' : target + (el.dataset.suffix || '');
+      };
+      requestAnimationFrame(update);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.stat-number').forEach(el => {
+            animateCount(el, parseInt(el.dataset.target), 1800);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(document.querySelector('.stats-section'));
+  </script>
 
 </body>
 </html>
