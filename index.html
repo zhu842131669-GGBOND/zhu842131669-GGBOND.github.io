@@ -687,7 +687,48 @@
         <div class="particles">
           <span></span><span></span><span></span><span></span><span></span>
         </div>
-        <span class="card-icon">🌼</span>
+        <span class="card-icon">
+          <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="gdPetal" cx="50%" cy="25%" r="70%">
+                <stop offset="0%" stop-color="#e0eeff"/>
+                <stop offset="50%" stop-color="#6699ff"/>
+                <stop offset="100%" stop-color="#2244bb" stop-opacity="0.7"/>
+              </radialGradient>
+              <radialGradient id="gdRing" cx="50%" cy="50%" r="50%">
+                <stop offset="60%" stop-color="#ffaa00"/>
+                <stop offset="100%" stop-color="#cc6600"/>
+              </radialGradient>
+              <radialGradient id="gdCenter" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#ffe599"/>
+                <stop offset="100%" stop-color="#cc7700"/>
+              </radialGradient>
+              <filter id="gdGlow">
+                <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <g transform="translate(26,26)" filter="url(#gdGlow)">
+              <!-- 10 neon petals -->
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(0)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(36)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(72)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(108)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(144)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(180)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(216)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(252)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(288)"/>
+              <ellipse rx="4" ry="9" cy="-15" fill="url(#gdPetal)" stroke="#aaccff" stroke-width="0.6" transform="rotate(324)"/>
+              <!-- Gold ring -->
+              <circle r="10" fill="url(#gdRing)" stroke="#ffdd00" stroke-width="1"/>
+              <!-- Dark center -->
+              <circle r="8" fill="#0d0d2e"/>
+              <!-- Pentagon -->
+              <polygon points="0,-6 5.7,-1.85 3.51,4.85 -3.51,4.85 -5.7,-1.85" fill="url(#gdCenter)" stroke="#ffcc44" stroke-width="0.6"/>
+            </g>
+          </svg>
+        </span>
         <span class="card-tag tag-kpop">K-POP</span>
         <h3>日韩明星小卡</h3>
         <p>权志龙强势回归！快闪限定、专辑小卡、场周卡，正版专辑。</p>
