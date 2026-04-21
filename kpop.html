@@ -112,6 +112,12 @@
     .lb-hint.hidden { opacity: 0; }
     .lb-reset { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); font-size: 12px; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: background .2s, color .2s; }
     .lb-reset:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .coming-soon { text-align: center; padding: 80px 20px; }
+    .coming-soon .cs-icon { font-size: 56px; margin-bottom: 24px; }
+    .coming-soon h3 { font-size: 28px; font-weight: 800; margin-bottom: 12px; color: var(--theme); }
+    .coming-soon p { color: rgba(255,255,255,0.45); font-size: 15px; line-height: 1.8; margin-bottom: 32px; }
+    .cs-btn { display: inline-block; background: var(--theme); color: #000; font-weight: 800; font-size: 14px; padding: 12px 32px; border-radius: 50px; text-decoration: none; transition: opacity .2s; }
+    .cs-btn:hover { opacity: 0.85; }
   </style>
 </head>
 <body>
@@ -140,6 +146,12 @@
   <main class="catalog-section">
     <div class="product-grid" id="productGrid"></div>
     <div class="pagination" id="pagination"></div>
+    <div class="coming-soon" id="comingSoon" style="display:none;">
+      <div class="cs-icon">🌸</div>
+      <h3>Coming Soon</h3>
+      <p>New K-POP photocards are on the way.<br />Stay tuned or contact us to enquire.</p>
+      <a href="index.html#contact" class="cs-btn">Contact Us</a>
+    </div>
   </main>
 
   <footer>© 2026 GGBOND CARD HABITAT · Pokemon · NBA · Soccer · K-POP</footer>
@@ -161,28 +173,7 @@
   </div>
 
   <script>
-    const CARDS = [
-      { name: "G-Dragon KWON Pop-up Exclusive", grade: "Raw", price: "$180", desc: "Limited pop-up exclusive from GD's 2025 comeback. Ultra-rare photocard — signed series available.", front: "images/card1.jpg", back: "images/card1-back.jpg" },
-      { name: "G-Dragon PEACEMINUSONE Card", grade: "Raw", price: "$250", desc: "Official PEACEMINUSONE brand photocard. GD's iconic flower label — highly collectible.", front: "images/card2.jpg", back: "images/card2-back.jpg" },
-      { name: "BTS Jung Kook Official PC", grade: "Raw", price: "$85", desc: "Official BTS Golden album photocard. JK's solo era — global icon card.", front: "images/card3.jpg", back: "images/card3-back.jpg" },
-      { name: "BTS V Layover Album PC", grade: "Raw", price: "$95", desc: "BTS V solo album Layover photocard. Taehyung's artistic debut — collector's favourite.", front: "images/card4.jpg", back: "images/card4-back.jpg" },
-      { name: "BTS Jimin Face Album PC", grade: "Raw", price: "$75", desc: "Jimin's solo album Face photocard. Iconic solo debut card from K-pop's top soloist.", front: "images/card5.jpg", back: "images/card5-back.jpg" },
-      { name: "BLACKPINK Lisa Photocard", grade: "Raw", price: "$90", desc: "Official BLACKPINK Lisa photocard. LALISA era — Thailand's global K-pop queen.", front: "images/card6.jpg", back: "images/card6-back.jpg" },
-      { name: "BLACKPINK Jennie Photocard", grade: "Raw", price: "$110", desc: "Official BLACKPINK Jennie card. SOLO era — the human Chanel of K-pop.", front: "images/card7.jpg", back: "images/card7-back.jpg" },
-      { name: "BLACKPINK Rosé Photocard", grade: "Raw", price: "$85", desc: "Official BLACKPINK Rosé card. Rosie era — charming vocalist in premium card format.", front: "images/card8.jpg", back: "images/card8-back.jpg" },
-      { name: "aespa Karina Official PC", grade: "Raw", price: "$70", desc: "SM Entertainment official aespa Karina photocard. MY WORLD era — aespa's iconic leader.", front: "images/card9.jpg", back: "images/card9-back.jpg" },
-      { name: "aespa Winter Official PC", grade: "Raw", price: "$65", desc: "Official aespa Winter photocard. Spellbound era — SM's powerhouse vocalist.", front: "images/card10.jpg", back: "images/card10-back.jpg" },
-      { name: "NewJeans Minji Photocard", grade: "Raw", price: "$80", desc: "NewJeans official Minji photocard. Get Up era — Y2K aesthetic perfection.", front: "images/card11.jpg", back: "images/card11-back.jpg" },
-      { name: "NewJeans Hanni Photocard", grade: "Raw", price: "$75", desc: "NewJeans official Hanni photocard. Bubble Gum era — playful and iconic card.", front: "images/card1.jpg", back: "images/card1-back.jpg" },
-      { name: "IVE Wonyoung Official PC", grade: "Raw", price: "$95", desc: "Official IVE Wonyoung photocard. After Like era — K-pop's reigning visual queen.", front: "images/card2.jpg", back: "images/card2-back.jpg" },
-      { name: "TWICE Nayeon Photocard", grade: "Raw", price: "$70", desc: "Official TWICE Nayeon card. POP! era solo debut photocard.", front: "images/card3.jpg", back: "images/card3-back.jpg" },
-      { name: "STRAY KIDS Bang Chan PC", grade: "Raw", price: "$80", desc: "Official STRAY KIDS Bang Chan photocard. MIROH era — STAYs' beloved leader.", front: "images/card4.jpg", back: "images/card4-back.jpg" },
-      { name: "EXO Baekhyun Photocard", grade: "Raw", price: "$90", desc: "Official EXO Baekhyun card. Delight solo era — EXO-L's most cherished idol card.", front: "images/card5.jpg", back: "images/card5-back.jpg" },
-      { name: "SEVENTEEN S.Coups Official PC", grade: "Raw", price: "$65", desc: "SEVENTEEN official S.Coups photocard. Face The Sun era — SVT's reliable leader.", front: "images/card6.jpg", back: "images/card6-back.jpg" },
-      { name: "ATEEZ Hongjoong Photocard", grade: "Raw", price: "$75", desc: "Official ATEEZ Hongjoong card. THE WORLD era — ATINYs' ship captain in print.", front: "images/card7.jpg", back: "images/card7-back.jpg" },
-      { name: "NCT 127 Taeyong Official PC", grade: "Raw", price: "$70", desc: "NCT 127 official Taeyong photocard. Ay-Yo era — NEO CULTURE's dynamic centre.", front: "images/card8.jpg", back: "images/card8-back.jpg" },
-      { name: "G-Dragon Coup D'etat Album", grade: "Raw", price: "$320", desc: "Original physical album with full photocard set. GD's landmark solo record — highly sought.", front: "images/card9.jpg", back: "images/card9-back.jpg" },
-    ];
+    const CARDS = [];
 
     const PAGE_SIZE = 20;
     let currentPage = 1;
@@ -197,6 +188,11 @@
     }
 
     function renderGrid(page) {
+      if (CARDS.length === 0) {
+        document.getElementById('countDisplay').textContent = '0';
+        document.getElementById('comingSoon').style.display = 'block';
+        return;
+      }
       const start = (page - 1) * PAGE_SIZE;
       const items = CARDS.slice(start, start + PAGE_SIZE);
       document.getElementById('countDisplay').textContent = CARDS.length;
