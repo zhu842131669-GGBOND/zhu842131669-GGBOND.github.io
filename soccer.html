@@ -228,7 +228,6 @@
         <option value="price-asc">Price: Low → High</option>
         <option value="price-desc">Price: High → Low</option>
         <option value="newest">Newest Added</option>
-        <option value="grade">Grade: Best First</option>
         <option value="best-match">Best Match</option>
       </select>
     </div>
@@ -336,14 +335,6 @@
       if (g.startsWith('bgs') || g.startsWith('cgc')) return 500 + num * 10;
       return 0;
     }
-    function matchScore(card, q) {
-      if (!q) return 0;
-      let s = 0;
-      if (card.name.toLowerCase().includes(q)) s += 3;
-      if (card.grade.toLowerCase().includes(q)) s += 2;
-      if (card.desc.toLowerCase().includes(q)) s += 1;
-      return s;
-    }
 
     function getFilters() {
       const checked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(el => el.value);
@@ -392,8 +383,7 @@
         case 'price-asc':  filteredCards.sort((a, b) => parsePrice(a.price) - parsePrice(b.price)); break;
         case 'price-desc': filteredCards.sort((a, b) => parsePrice(b.price) - parsePrice(a.price)); break;
         case 'newest':     filteredCards.sort((a, b) => CARDS.indexOf(b) - CARDS.indexOf(a)); break;
-        case 'grade':      filteredCards.sort((a, b) => gradeScore(b.grade) - gradeScore(a.grade)); break;
-        case 'best-match': filteredCards.sort((a, b) => matchScore(b, q) - matchScore(a, q)); break;
+        case 'best-match': filteredCards.sort((a, b) => gradeScore(b.grade) - gradeScore(a.grade)); break;
       }
       currentPage = 1;
       renderGrid(1);
