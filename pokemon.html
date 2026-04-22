@@ -88,6 +88,9 @@
     .fp-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 12px 0; }
     .fp-clear { margin-top: 14px; width: 100%; padding: 8px 0; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); border-radius: 8px; color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s; }
     .fp-clear:hover { border-color: rgba(255,255,255,0.3); color: #fff; background: rgba(255,255,255,0.08); }
+    .sort-select { flex-shrink: 0; height: 44px; padding: 0 36px 0 14px; background-color: rgba(255,255,255,0.05); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 700; cursor: pointer; outline: none; transition: border-color .2s, background-color .2s; appearance: none; -webkit-appearance: none; }
+    .sort-select:hover, .sort-select:focus { border-color: var(--theme); color: #fff; background-color: var(--theme-dim); }
+    .sort-select option { background: #1a1a24; color: #fff; }
 
     /* CATALOG */
     .catalog-section { padding: 40px 60px 60px; }
@@ -240,6 +243,14 @@
           <button class="fp-clear" id="fpClear">Clear All</button>
         </div>
       </div>
+      <select id="sortSelect" class="sort-select">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="newest">Newest Added</option>
+        <option value="grade">Grade: Best First</option>
+        <option value="best-match">Best Match</option>
+      </select>
     </div>
     <div class="product-grid" id="productGrid"></div>
     <div class="pagination" id="pagination"></div>
@@ -255,6 +266,7 @@
 
     const PAGE_SIZE = 20;
     let currentPage = 1;
+    let currentSort = 'featured';
     let filteredCards = [...CARDS];
 
     function getTotalPages() { return Math.ceil(filteredCards.length / PAGE_SIZE); }
@@ -334,6 +346,22 @@
 
     function parsePrice(str) { return parseFloat(str.replace(/[^0-9.]/g, '')) || 0; }
 
+    function gradeScore(grade) {
+      const g = grade.toLowerCase();
+      const num = parseFloat(g.match(/[\d.]+/)?.[0] || 0);
+      if (g.startsWith('psa')) return 1000 + num * 10;
+      if (g.startsWith('bgs') || g.startsWith('cgc')) return 500 + num * 10;
+      return 0;
+    }
+    function matchScore(card, q) {
+      if (!q) return 0;
+      let s = 0;
+      if (card.name.toLowerCase().includes(q)) s += 3;
+      if (card.grade.toLowerCase().includes(q)) s += 2;
+      if (card.desc.toLowerCase().includes(q)) s += 1;
+      return s;
+    }
+
     function getFilters() {
       const checked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(el => el.value);
       return {
@@ -377,6 +405,13 @@
         if (f.avail.length && !f.avail.includes(c.availability)) return false;
         return true;
       });
+      switch (currentSort) {
+        case 'price-asc':  filteredCards.sort((a, b) => parsePrice(a.price) - parsePrice(b.price)); break;
+        case 'price-desc': filteredCards.sort((a, b) => parsePrice(b.price) - parsePrice(a.price)); break;
+        case 'newest':     filteredCards.sort((a, b) => CARDS.indexOf(b) - CARDS.indexOf(a)); break;
+        case 'grade':      filteredCards.sort((a, b) => gradeScore(b.grade) - gradeScore(a.grade)); break;
+        case 'best-match': filteredCards.sort((a, b) => matchScore(b, q) - matchScore(a, q)); break;
+      }
       currentPage = 1;
       renderGrid(1);
       renderPagination();
@@ -410,6 +445,11 @@
       document.querySelectorAll('.filter-panel input[type="checkbox"]').forEach(el => el.checked = false);
       document.getElementById('priceMin').value = '';
       document.getElementById('priceMax').value = '';
+      applyFilters();
+    });
+    document.getElementById('sortSelect').addEventListener('change', e => {
+      currentSort = e.target.value;
+      currentPage = 1;
       applyFilters();
     });
 
