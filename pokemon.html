@@ -327,7 +327,7 @@
   <script>
     const CAT = 'pokemon';
     const CARDS = [
-      { name: "Mega Gengar SAR", grade: "PSA 10", price: "$280", availability: "In Stock", cardType: "Regular", desc: "Scarlet & Violet 151 set. One of the most sought-after SAR pulls worldwide.", front: "images/card7.jpg", back: "images/card7-back.jpg" },
+      { name: "Mega Gengar SAR", grade: "PSA 10", price: "$280", availability: "In Stock", cardType: "Regular", year: "2025", manufacturer: "Pokemon TCG", series: "M2a JP", desc: "One of the most sought-after SAR pulls worldwide.", front: "images/card7.jpg", back: "images/card7-back.jpg" },
     ];
 
     const PAGE_SIZE = 20;
@@ -354,7 +354,7 @@
         return;
       }
       document.getElementById('productGrid').innerHTML = items.map((c, i) => {
-        const url = `product.html?cat=${CAT}&name=${encodeURIComponent(c.name)}&grade=${encodeURIComponent(c.grade)}&price=${encodeURIComponent(c.price)}&desc=${encodeURIComponent(c.desc)}&front=${encodeURIComponent(c.front)}&back=${encodeURIComponent(c.back)}`;
+        const url = `product.html?cat=${CAT}&name=${encodeURIComponent(c.name)}&grade=${encodeURIComponent(c.grade)}&price=${encodeURIComponent(c.price)}&year=${encodeURIComponent(c.year||'')}&manufacturer=${encodeURIComponent(c.manufacturer||'')}&series=${encodeURIComponent(c.series||'')}&desc=${encodeURIComponent(c.desc)}&front=${encodeURIComponent(c.front)}&back=${encodeURIComponent(c.back)}`;
         return `
         <div class="product-card" onclick="location.href='${url}'" style="cursor:pointer" onmouseleave="this.querySelector('.product-img').classList.remove('show-back');const b=this.querySelector('.overlay-btn-back');if(b)b.textContent='BACK PHOTO';">
           <div class="product-img">

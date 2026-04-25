@@ -101,6 +101,15 @@
 
     .detail-desc-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 12px; }
     .detail-desc { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.9; margin-bottom: 40px; }
+    .card-info-block { margin-bottom: 40px; }
+    .card-info-table { width: 100%; border-collapse: collapse; }
+    .card-info-table tr { border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .card-info-table tr:last-child { border-bottom: none; }
+    .card-info-table td { padding: 11px 0; vertical-align: top; font-size: 14px; line-height: 1.6; }
+    .cit-label { width: 38%; color: rgba(255,255,255,0.35); font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding-right: 16px; }
+    .cit-value { color: rgba(255,255,255,0.75); font-weight: 500; }
+    .cit-value.score-gold { color: #f9d923; font-weight: 800; }
+    .cit-intro { color: rgba(255,255,255,0.6); line-height: 1.9; font-size: 15px; font-weight: 400; }
 
     .detail-actions { display: flex; gap: 12px; margin-bottom: 28px; }
     .btn-buy-lg {
@@ -226,8 +235,7 @@
         <h1 class="detail-name" id="detailName"></h1>
         <div class="detail-price" id="detailPrice"></div>
         <div class="detail-divider"></div>
-        <div class="detail-desc-label">Description</div>
-        <div class="detail-desc" id="detailDesc"></div>
+        <div class="card-info-block" id="cardInfoBlock"></div>
         <div class="detail-actions">
           <button class="btn-buy-lg">BUY NOW</button>
           <button class="btn-icon-lg" onclick="toggleCart(this)" title="Add to Cart">🛒</button>
@@ -263,13 +271,16 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const name  = params.get('name')  || 'Unknown Card';
-    const grade = params.get('grade') || '';
-    const price = params.get('price') || '';
-    const desc  = params.get('desc')  || '';
-    const front = params.get('front') || '';
-    const back  = params.get('back')  || '';
-    const cat   = params.get('cat')   || '';
+    const name         = params.get('name')         || 'Unknown Card';
+    const grade        = params.get('grade')        || '';
+    const price        = params.get('price')        || '';
+    const desc         = params.get('desc')         || '';
+    const front        = params.get('front')        || '';
+    const back         = params.get('back')         || '';
+    const cat          = params.get('cat')          || '';
+    const year         = params.get('year')         || '';
+    const manufacturer = params.get('manufacturer') || '';
+    const series       = params.get('series')       || '';
 
     const CAT_MAP = {
       pokemon:    { label: 'Pokemon Cards',    href: 'pokemon.html',    theme: '#f9d923', dim: 'rgba(249,217,35,0.15)',  glow: 'rgba(249,217,35,0.25)',  nav: 'navPokemon' },
@@ -291,7 +302,32 @@
     document.getElementById('breadName').textContent = name;
     document.getElementById('detailName').textContent = name;
     document.getElementById('detailPrice').textContent = price;
-    document.getElementById('detailDesc').textContent = desc;
+    function parseGrade(gradeStr) {
+      const raw = gradeStr.trim();
+      if (raw.toLowerCase() === 'raw') return { isRaw: true, company: null, score: null };
+      const parts = raw.split(/\s+/);
+      return { isRaw: false, company: parts[0] ? parts[0].toUpperCase() : '', score: parts[1] ? parseFloat(parts[1]) : null };
+    }
+    function buildInfoBlock() {
+      const g = parseGrade(grade);
+      const row = (label, val, cls) =>
+        `<tr><td class="cit-label">${label}</td><td class="cit-value${cls ? ' '+cls : ''}">${val}</td></tr>`;
+      let rows = '';
+      rows += row('年份 Year',            year || '—');
+      rows += row('卡牌商 Manufacturer',  manufacturer || '—');
+      rows += row('卡牌系列 Series',      series || '—');
+      if (!g.isRaw) {
+        rows += row('是否评级 Graded',    'Yes');
+        rows += row('评级公司 Company',   g.company || '—');
+        rows += row('评级分数 Score',     g.score !== null ? String(g.score) : '—', g.score === 10 ? 'score-gold' : '');
+      }
+      rows += `<tr>
+        <td class="cit-label" style="padding-top:16px;">卡牌介绍<br>Introduction</td>
+        <td class="cit-value cit-intro" style="padding-top:16px;">${desc || '—'}</td>
+      </tr>`;
+      document.getElementById('cardInfoBlock').innerHTML = `<table class="card-info-table">${rows}</table>`;
+    }
+    buildInfoBlock();
     document.getElementById('cardImg').src = front;
     document.getElementById('cardImg').alt = name;
 
