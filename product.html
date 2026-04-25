@@ -304,9 +304,12 @@
     document.getElementById('detailPrice').textContent = price;
     function parseGrade(gradeStr) {
       const raw = gradeStr.trim();
-      if (raw.toLowerCase() === 'raw') return { isRaw: true, company: null, score: null };
+      if (raw.toLowerCase() === 'raw') return { isRaw: true, company: null, score: null, scoreDisplay: null };
       const parts = raw.split(/\s+/);
-      return { isRaw: false, company: parts[0] ? parts[0].toUpperCase() : '', score: parts[1] ? parseFloat(parts[1]) : null };
+      const company = parts[0] ? parts[0].toUpperCase() : '';
+      const scoreStr = parts.slice(1).join(' ');
+      const scoreNum = parseFloat(scoreStr);
+      return { isRaw: false, company, score: isNaN(scoreNum) ? null : scoreNum, scoreDisplay: scoreStr || null };
     }
     function buildInfoBlock() {
       const g = parseGrade(grade);
@@ -319,7 +322,7 @@
       if (!g.isRaw) {
         rows += row('是否评级 Graded',    'Yes');
         rows += row('评级公司 Company',   g.company || '—');
-        rows += row('评级分数 Score',     g.score !== null ? String(g.score) : '—', g.score === 10 ? 'score-gold' : '');
+        rows += row('评级分数 Score',     g.scoreDisplay || '—', g.score === 10 ? 'score-gold' : '');
       }
       rows += `<tr>
         <td class="cit-label" style="padding-top:16px;">卡牌介绍<br>Introduction</td>
