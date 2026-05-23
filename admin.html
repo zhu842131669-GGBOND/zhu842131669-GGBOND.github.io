@@ -102,6 +102,23 @@
     .btn-cancel { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.1); }
     .btn-cancel:hover { background:rgba(255,255,255,0.1); color:#fff; }
 
+    /* IMAGE UPLOAD */
+    .img-upload-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .img-upload-box {
+      border:2px dashed rgba(255,255,255,0.15); border-radius:10px; padding:14px;
+      text-align:center; cursor:pointer; transition:border-color .2s; position:relative; min-height:110px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    }
+    .img-upload-box:hover { border-color:rgba(249,217,35,0.4); }
+    .img-upload-box.has-img { border-style:solid; border-color:rgba(249,217,35,0.3); }
+    .img-upload-box input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .img-upload-box img { max-height:80px; max-width:100%; border-radius:6px; object-fit:contain; }
+    .img-upload-label { font-size:11px; color:rgba(255,255,255,0.35); }
+    .img-upload-hint  { font-size:10px; color:rgba(255,255,255,0.2); }
+    .img-uploading { font-size:11px; color:#f9d923; }
+    .img-clear { position:absolute; top:6px; right:6px; background:rgba(248,113,113,0.2); border:none; color:#f87171; border-radius:4px; width:20px; height:20px; cursor:pointer; font-size:13px; line-height:1; display:none; align-items:center; justify-content:center; }
+    .img-upload-box.has-img .img-clear { display:flex; }
+
     /* EMPTY STATE */
     .empty { text-align:center; padding:48px; color:rgba(255,255,255,0.3); font-size:14px; }
 
@@ -263,15 +280,34 @@
       <label class="form-label">Description</label>
       <input class="form-input" id="pDesc" placeholder="Short description" />
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Front Image URL</label>
-        <input class="form-input" id="pFront" placeholder="https://..." />
+    <div class="form-group">
+      <label class="form-label">Card Images</label>
+      <div class="img-upload-row">
+        <div class="img-upload-box" id="frontBox">
+          <input type="file" accept="image/*" onchange="uploadImage('front',this)" />
+          <img id="frontPreview" style="display:none" />
+          <div id="frontPlaceholder">
+            <div style="font-size:22px">🖼️</div>
+            <div class="img-upload-label">Front of Card</div>
+            <div class="img-upload-hint">Click to upload</div>
+          </div>
+          <div class="img-uploading" id="frontUploading" style="display:none">Uploading…</div>
+          <button class="img-clear" type="button" onclick="clearImage('front',event)">×</button>
+        </div>
+        <div class="img-upload-box" id="backBox">
+          <input type="file" accept="image/*" onchange="uploadImage('back',this)" />
+          <img id="backPreview" style="display:none" />
+          <div id="backPlaceholder">
+            <div style="font-size:22px">🖼️</div>
+            <div class="img-upload-label">Back of Card</div>
+            <div class="img-upload-hint">Click to upload</div>
+          </div>
+          <div class="img-uploading" id="backUploading" style="display:none">Uploading…</div>
+          <button class="img-clear" type="button" onclick="clearImage('back',event)">×</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Back Image URL</label>
-        <input class="form-input" id="pBack" placeholder="https://..." />
-      </div>
+      <input type="hidden" id="pFront" />
+      <input type="hidden" id="pBack" />
     </div>
     <div class="form-group">
       <label class="form-label">Available</label>
@@ -291,6 +327,7 @@
 
 <script>
   const API_BASE = 'https://grateful-javascript-toward-springfield.trycloudflare.com/api/v1';
+  const IMG_BASE  = 'https://grateful-javascript-toward-springfield.trycloudflare.com/uploads/';
   let allProducts = [], allOrders = [];
   let toastTimer;
 
@@ -364,6 +401,74 @@
     } catch(e) { console.error(e); }
   }
 
+  /* ── IMAGE UPLOAD ── */
+  async function uploadImage(side, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const box       = document.getElementById(side + 'Box');
+    const preview   = document.getElementById(side + 'Preview');
+    const placeholder = document.getElementById(side + 'Placeholder');
+    const uploading = document.getElementById(side + 'Uploading');
+    const hidden    = document.getElementById(side === 'front' ? 'pFront' : 'pBack');
+
+    placeholder.style.display = 'none';
+    uploading.style.display   = 'block';
+    preview.style.display     = 'none';
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(API_BASE + '/upload', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('oflycard_token') },
+        body: formData
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Upload failed');
+      hidden.value       = IMG_BASE + data.filename;
+      preview.src        = IMG_BASE + data.filename;
+      preview.style.display = 'block';
+      box.classList.add('has-img');
+      showToast('Image uploaded!');
+    } catch(e) {
+      showToast('Upload failed: ' + e.message);
+      placeholder.style.display = 'flex';
+    } finally {
+      uploading.style.display = 'none';
+    }
+  }
+
+  function clearImage(side, e) {
+    e.stopPropagation();
+    const box       = document.getElementById(side + 'Box');
+    const preview   = document.getElementById(side + 'Preview');
+    const placeholder = document.getElementById(side + 'Placeholder');
+    const hidden    = document.getElementById(side === 'front' ? 'pFront' : 'pBack');
+    hidden.value    = '';
+    preview.src     = '';
+    preview.style.display    = 'none';
+    placeholder.style.display = 'flex';
+    box.classList.remove('has-img');
+    box.querySelector('input[type=file]').value = '';
+  }
+
+  function setImagePreview(side, url) {
+    const box       = document.getElementById(side + 'Box');
+    const preview   = document.getElementById(side + 'Preview');
+    const placeholder = document.getElementById(side + 'Placeholder');
+    if (url) {
+      preview.src = url;
+      preview.style.display    = 'block';
+      placeholder.style.display = 'none';
+      box.classList.add('has-img');
+    } else {
+      preview.src = '';
+      preview.style.display    = 'none';
+      placeholder.style.display = 'flex';
+      box.classList.remove('has-img');
+    }
+  }
+
   /* ── PRODUCTS ── */
   async function loadProducts() {
     const res = await fetch(API_BASE + '/products', { headers: authHeaders() });
@@ -412,6 +517,8 @@
     document.getElementById('pDesc').value      = p?.description || '';
     document.getElementById('pFront').value     = p?.front_image || '';
     document.getElementById('pBack').value      = p?.back_image  || '';
+    setImagePreview('front', p?.front_image || '');
+    setImagePreview('back',  p?.back_image  || '');
     document.getElementById('pAvailable').value = p ? String(p.is_available) : 'true';
     document.getElementById('productModal').classList.add('open');
   }
