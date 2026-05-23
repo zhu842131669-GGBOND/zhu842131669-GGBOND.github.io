@@ -552,7 +552,7 @@
       return ok;
     }
 
-    function placeOrder() {
+    async function placeOrder() {
       if (CartStore.count() === 0) return;
       if (!validateForm()) {
         document.getElementById('fieldName').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -564,10 +564,6 @@
       const ship = getShipping(sub);
       const total = sub + ship;
       const method = document.querySelector('input[name="shipping"]:checked')?.value || 'standard';
-
-      const ref = 'OFLY-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('orderRef').textContent = 'Reference: ' + ref;
-
       const name    = document.getElementById('fieldName').value.trim();
       const phone   = document.getElementById('fieldPhone').value.trim();
       const email   = document.getElementById('fieldEmail').value.trim();
@@ -578,6 +574,36 @@
       const country = document.getElementById('fieldCountry').value;
       const address = [street, city, state, zip, country].filter(Boolean).join(', ');
       const shipLabel = method === 'express' ? 'Express Tracked ($60)' : (ship === 0 ? 'Standard Tracked (FREE)' : 'Standard Tracked ($30)');
+
+      const placeBtn = document.getElementById('placeOrderBtn');
+      placeBtn.disabled = true;
+      placeBtn.textContent = 'Placing order…';
+
+      let ref;
+      try {
+        const token = localStorage.getItem('oflycard_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+
+        const res = await fetch('http://104.156.237.197/api/v1/orders', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            customer_name: name, customer_email: email, customer_phone: phone,
+            customer_address: address, shipping_method: method,
+            items: items.map(it => ({ title: it.fullTitle, grade: it.grade, price: it.price, qty: 1 }))
+          })
+        });
+        const data = await res.json();
+        ref = res.ok ? data.reference_no : ('OFLY-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000+Math.random()*9000));
+      } catch {
+        ref = 'OFLY-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000+Math.random()*9000);
+      } finally {
+        placeBtn.disabled = false;
+        placeBtn.textContent = 'PLACE ORDER →';
+      }
+
+      document.getElementById('orderRef').textContent = 'Reference: ' + ref;
 
       orderDetailsText = [
         '=== OFly Card ORDER ===',
