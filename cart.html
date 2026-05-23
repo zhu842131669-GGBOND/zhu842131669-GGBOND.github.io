@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Cart | GGBOND CARD HABITAT</title>
+  <title>My Cart | OFly Card</title>
   <style>
     :root { --theme: #ffd700; --theme-dim: rgba(255,215,0,0.12); --theme-glow: rgba(255,215,0,0.2); }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -269,7 +269,7 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">GGBOND CARD HABITAT</a>
+    <a href="index.html" class="logo">OFly Card</a>
     <ul>
       <li><a href="index.html">HOME</a></li>
       <li><a href="mycard.html">MY CARD</a></li>
@@ -422,7 +422,7 @@
     </div>
   </main>
 
-  <footer>© 2026 GGBOND CARD HABITAT · Pokemon · NBA · Soccer · K-POP</footer>
+  <footer>© 2026 OFly Card · Pokemon · NBA · Soccer · K-POP</footer>
 
   <!-- Order Confirmation Modal -->
   <div class="modal-overlay" id="orderModal">
@@ -564,7 +564,7 @@
       const total = sub + ship;
       const method = document.querySelector('input[name="shipping"]:checked')?.value || 'standard';
 
-      const ref = 'GGBOND-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
+      const ref = 'OFLY-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('orderRef').textContent = 'Reference: ' + ref;
 
       const name    = document.getElementById('fieldName').value.trim();
@@ -579,7 +579,7 @@
       const shipLabel = method === 'express' ? 'Express Tracked ($60)' : (ship === 0 ? 'Standard Tracked (FREE)' : 'Standard Tracked ($30)');
 
       orderDetailsText = [
-        '=== GGBOND CARD HABITAT ORDER ===',
+        '=== OFly Card ORDER ===',
         'Reference: ' + ref,
         'Date: ' + new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' }),
         '',
