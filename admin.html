@@ -504,7 +504,7 @@
         <td>
           <div style="display:flex;align-items:center;gap:10px">
             ${p.front_image
-              ? `<img class="product-thumb" src="${IMG_BASE}${p.front_image}" onclick="openImgLightbox('${IMG_BASE}${p.front_image}')">`
+              ? `<img class="product-thumb" src="${p.front_image}" onclick="openImgLightbox('${p.front_image}')">`
               : `<div style="width:48px;height:48px;border-radius:6px;background:rgba(255,255,255,0.06);flex-shrink:0"></div>`}
             <div>
               <div style="font-weight:600;color:#fff;max-width:200px">${[p.year, p.manufacturer, p.series, p.name].filter(Boolean).join(' ')}</div>
