@@ -578,9 +578,24 @@
       applyFilters();
     });
 
-    renderGrid(1);
-    renderPagination();
-    initScoreOptions();
+    (async () => {
+      try {
+        const res = await fetch('https://grateful-javascript-toward-springfield.trycloudflare.com/api/v1/products?category=' + CAT);
+        const data = await res.json();
+        CARDS.push(...data.map(p => ({
+          name: p.name, grade: p.grade || '', cardType: 'Regular',
+          price: '$' + Number(p.price).toLocaleString(),
+          availability: p.is_available ? 'In Stock' : 'Sold Out',
+          year: p.year || '', manufacturer: p.manufacturer || '',
+          series: p.series || '', desc: p.description || '',
+          front: p.front_image || '', back: p.back_image || '',
+        })));
+      } catch(e) { console.error('Failed to load products:', e); }
+      filteredCards = [...CARDS];
+      renderGrid(1);
+      renderPagination();
+      initScoreOptions();
+    })();
 
   </script>
   <script>
