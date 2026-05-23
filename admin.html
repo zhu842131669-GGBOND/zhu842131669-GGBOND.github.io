@@ -139,6 +139,25 @@
       .main { margin-left:60px; padding:16px; }
       .stats { grid-template-columns:1fr 1fr; }
     }
+
+    .product-thumb {
+      width:48px; height:48px; object-fit:cover; border-radius:6px;
+      cursor:pointer; flex-shrink:0;
+      transition:transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-thumb:hover {
+      transform:scale(2.5); box-shadow:0 4px 20px rgba(0,0,0,0.6);
+      z-index:10; position:relative;
+    }
+    .img-lightbox-bg {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+      z-index:200; align-items:center; justify-content:center; cursor:pointer;
+    }
+    .img-lightbox-bg.open { display:flex; }
+    .img-lightbox-bg img {
+      max-width:90vw; max-height:90vh; border-radius:10px;
+      box-shadow:0 8px 40px rgba(0,0,0,0.8);
+    }
   </style>
 </head>
 <body>
@@ -483,8 +502,15 @@
     tbody.innerHTML = list.map(p => `
       <tr>
         <td>
-          <div style="font-weight:600;color:#fff;max-width:220px">${[p.year, p.manufacturer, p.series, p.name].filter(Boolean).join(' ')}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">${p.description || ''}</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            ${p.front_image
+              ? `<img class="product-thumb" src="${IMG_BASE}${p.front_image}" onclick="openImgLightbox('${IMG_BASE}${p.front_image}')">`
+              : `<div style="width:48px;height:48px;border-radius:6px;background:rgba(255,255,255,0.06);flex-shrink:0"></div>`}
+            <div>
+              <div style="font-weight:600;color:#fff;max-width:200px">${[p.year, p.manufacturer, p.series, p.name].filter(Boolean).join(' ')}</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">${p.description || ''}</div>
+            </div>
+          </div>
         </td>
         <td><span class="badge badge-${p.category}">${p.category}</span></td>
         <td style="color:#f9d923">${p.grade || '—'}</td>
@@ -616,11 +642,25 @@
     else showToast('Update failed.');
   }
 
+  /* ── IMAGE LIGHTBOX ── */
+  function openImgLightbox(url) {
+    document.getElementById('imgLightboxImg').src = url;
+    document.getElementById('imgLightbox').classList.add('open');
+  }
+  function closeImgLightbox() {
+    document.getElementById('imgLightbox').classList.remove('open');
+    document.getElementById('imgLightboxImg').src = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImgLightbox(); });
+
   /* ── INIT ── */
   (async () => {
     await checkAdmin();
     await loadDashboard();
   })();
 </script>
+<div class="img-lightbox-bg" id="imgLightbox" onclick="closeImgLightbox()">
+  <img id="imgLightboxImg" src="" alt="">
+</div>
 </body>
 </html>
